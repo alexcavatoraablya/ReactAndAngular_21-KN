@@ -13,19 +13,22 @@ import
     Menu,
     theme
 } from 'antd';
-import {Link} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 
-const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
-    key,
-    label: `nav ${key}`,
-}));
+const items1: MenuProps['items'] = [
+    {
+        key: '1',
+        label: <Link to="/">Головна</Link>,
+    },
+    {
+        key: '2',
+        label: <Link to="/login">Вхід</Link>,
+    }
+];
 
-items1.push({
-    key: '4',
-    label: <Link to="/">Головна</Link>,
-})
+
 
 const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     (icon, index) => {
@@ -58,7 +61,7 @@ const MainLayout: React.FC = () => {
                 <Menu
                     theme="dark"
                     mode="horizontal"
-                    defaultSelectedKeys={['2']}
+                    defaultSelectedKeys={['1']}
                     items={items1}
                     style={{ flex: 1, minWidth: 0 }}
                 />
@@ -87,7 +90,7 @@ const MainLayout: React.FC = () => {
                             borderRadius: borderRadiusLG,
                         }}
                     >
-                        Content
+                        <Outlet />
                     </Content>
                 </Layout>
             </Layout>
