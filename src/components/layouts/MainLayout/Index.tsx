@@ -13,6 +13,7 @@ import
     Menu,
     theme
 } from 'antd';
+import {Link} from "react-router-dom";
 
 const { Header, Content, Sider } = Layout;
 
@@ -20,6 +21,11 @@ const items1: MenuProps['items'] = ['1', '2', '3'].map((key) => ({
     key,
     label: `nav ${key}`,
 }));
+
+items1.push({
+    key: '4',
+    label: <Link to="/">Головна</Link>,
+})
 
 const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
     (icon, index) => {
