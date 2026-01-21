@@ -25,6 +25,18 @@ const items1: MenuProps['items'] = [
     {
         key: '2',
         label: <Link to="/login">Вхід</Link>,
+    },
+    {
+        key: '3',
+        label: <Link to="/ContactsPage">Контакти</Link>,
+    },
+    {
+        key: '4',
+        label: <Link to="/DreamsPage">Мої бажання</Link>,
+    },
+    {
+        key: '5',
+        label: <Link to="/WhatToDoPage">Що я маю зробити</Link>,
     }
 ];
 
