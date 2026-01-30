@@ -26,6 +26,10 @@ const items1: MenuProps['items'] = [
         key: '2',
         label: <Link to="/login">Вхід</Link>,
     },
+    {
+        key: '3',
+        label: <Link to="/register">Реєстрація</Link>,
+    },
 ];
 
 
