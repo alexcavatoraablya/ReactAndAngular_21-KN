@@ -35,4 +35,14 @@ git commit -m"Текст коміту, що ми зробили"
 git push
 ```
 
+# Створення проекту
+```
+npm create vite@latest
 
+npm i bootstrap
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
+npm i react-router-dom
+```
