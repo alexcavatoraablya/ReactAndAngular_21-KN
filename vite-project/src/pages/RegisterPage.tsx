@@ -1,20 +1,37 @@
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, Upload} from "antd";
 import type {IRegisterForm} from "../types/IRegisterForm.ts";
 import {UserOutlined} from "@ant-design/icons";
-import React from "react";
-import Dragger from "antd/es/upload/Dragger";
-import type {RcFile} from "antd/es/upload";
+//import Dragger from "antd/es/upload/Dragger";
+//import type {RcFile} from "antd/es/upload";
+import {useState} from "react";
 
 const RegisterPage = () =>
 {
     const [form] = Form.useForm<IRegisterForm>();
 
-    const [myFileUpload, setMyFileUpload] = useState<RcFile|inderfined>(underfined);
+    const [myFileUpload, setMyFileUpload] = useState<File|null>(null);
 
     //коли будемо натискати кнопку реєстрація
     const onSubmitHandler = (values: IRegisterForm) => {
         console.log("Submit Result", values);
     }
+
+    //Коли ми обрали файл із зображенням
+    const normFile = (e: any) => {
+        console.log('Upload event:', e); //який файл ми обрали
+        if (Array.isArray(e)) { //ми перевіряємо скільки файлів
+            return e;
+        }
+        const n = e?.fileList.length; //отримуємо к-сть якзо їх 1+
+
+        if(n<1) {
+            setMyFileUpload(null);
+            return e?.fileList; //якщо к-сть менша 1 то вертаємо пустий список
+        }
+        setMyFileUpload(e?.fileList[n-1].originFileObj);
+        //console.log("select file", e?.fileList[n-1]); //обрпаний файл у данний момент
+        return [e?.fileList[n-1]]; //вертаємо останій обраний файл
+    };
 
     return (
         <>
@@ -75,40 +92,34 @@ const RegisterPage = () =>
                             <Input />
                         </Form.Item>
 
-                        <Dragger name={'file'}
-                                 multiple={false}
-                                 beforeUpload = { (file) => {
-                                     console.log('Selected file:', file);
-                                     return false;
-                                 }}
-                                 onChange = {(info) => {
-                                     console.log("info", info);
-                                     setMyFileUpload(info.file.originFileObj);
-                                 }}
+                        <Form.Item label="Фото"
+                                   name={"image"}
+                                   rules={[{required: true, message: "Вкажіть фото"}]}
                         >
-                            <p className="ant-upload-drag-icon">
-                                { myFileUpload != underfined ?
-                                    <img src={URL.createObjectURL(myFileUpload)}
-                                         width="150px" alt=""/>
-                                        :
-                                        <UserOutlined />
-                                }
-                            </p>
-                            <p className="ant-upload-text">
-                                Натисніть або перетягніть файл у цю область, щоб завантажити
-                            </p>
-                            <p className="ant-upload-hint">
-                                Оберіть один файл для вашого фото
-                            </p>
-                        </Dragger>
 
-                        <div className={"pt-4 flex justify-center"}>
-                            <Form.Item label = {null}>
-                                <Button type={"primary"} htmlType={"submit"}>
-                                    Реєструватися
-                                </Button>
+                            <Form.Item<IRegisterForm> name="image" valuePropName="fileList"
+                                                      getValueFromEvent={normFile}
+                                                      noStyle>
+                                <Upload.Dragger name="files" multiple={false}
+                                                listType="picture"
+                                                accept={"image/*"}
+                                                beforeUpload={() => {return false;}}
+                                >
+                                    <p className="ant-upload-drag-icon">
+                                        { myFileUpload ?
+                                            <img src={URL.createObjectURL(myFileUpload)}
+                                            height={200}/>
+                                            :
+                                        <UserOutlined />
+                                        }
+                                    </p>
+                                    <p className="ant-upload-text">Натисніть або перетягніть фото</p>
+                                    <p className="ant-upload-hint">Support for a single or bulk upload.</p>
+                                </Upload.Dragger>
                             </Form.Item>
-                        </div>
+                        </Form.Item>
+
+
 
                         <Form.Item<IRegisterForm>
                             label={"Пароль"}
