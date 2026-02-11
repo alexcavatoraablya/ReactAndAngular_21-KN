@@ -1,6 +1,0 @@
-1.Початок вивчення React App. Створення проекту React TypeScript Vite. 
-Підключення сучасних стилів Tailwind.css
-2.Робота із бібліотеками react-router-dom. Використання бібліотеки antd.
-3.Робота з маршрутизаціюєю на React App. OutLet та Link to.
-4.Робота з формами у додатку React App. Використання Antd Form.
-5.Валідація та перевірка даних форми React TypeScript.

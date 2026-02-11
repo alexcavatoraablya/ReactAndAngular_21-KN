@@ -1,3 +1,0 @@
-Зробити Layout для сторінок 
-https://github.com/remix-run/react-router/blob/main/examples/basic/src/App.tsx
-Зробити будь-який приклад

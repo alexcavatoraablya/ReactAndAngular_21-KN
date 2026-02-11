@@ -1,19 +1,52 @@
 import {Button, Form, Input, Upload} from "antd";
 import type {IRegisterForm} from "../types/IRegisterForm.ts";
 import {UserOutlined} from "@ant-design/icons";
-//import Dragger from "antd/es/upload/Dragger";
 //import type {RcFile} from "antd/es/upload";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+//import type {UploadFile} from "antd/lib";
 
 const RegisterPage = () =>
 {
     const [form] = Form.useForm<IRegisterForm>();
 
+    const navigate = useNavigate();
+
     const [myFileUpload, setMyFileUpload] = useState<File|null>(null);
 
     //коли будемо натискати кнопку реєстрація
     const onSubmitHandler = (values: IRegisterForm) => {
+        if(myFileUpload == null) {
+            alert("Оберіть фото!");
+            return;
+        }
+        //localstorage - спец память у веб браузері де можна зберігати інфо про юзера.
+        //туди має доступ поточна сторінка де ви працюєте - Ваш домен - http://localhost:5173
+
+        localStorage.name = `${values.lastName} ${values.firstName} ${values.middleName} ${values.email} ${values.image}`;
+        //localStorage.setItem('userProfile', JSON.stringify(myFileUpload));
+        //перетворимо дані у формат JSON
+        //JSON - рядок який виглядає як обєкт джаваскріпт
+        // const base64 = (values.image as Array<UploadFile>)[0].thumbUrl;
+        // console.log("base64 image", base64);
+
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(myFileUpload);
+        fileReader.onload = () => {
+            const base64 = fileReader.result as string;
+            console.log("base64 image file", base64);
+            const json = JSON.stringify({...values, image: base64});
+            console.log("JSON DATA", json);
+            localStorage.setItem("user", json);
+            navigate("/profile");
+        }
+        //як перетвортти File у base64
+
+
+        // const json = JSON.stringify(values);
+        // console.log("JSON DATA", json);
         console.log("Submit Result", values);
+
     }
 
     //Коли ми обрали файл із зображенням
@@ -31,6 +64,7 @@ const RegisterPage = () =>
         setMyFileUpload(e?.fileList[n-1].originFileObj);
         //console.log("select file", e?.fileList[n-1]); //обрпаний файл у данний момент
         return [e?.fileList[n-1]]; //вертаємо останій обраний файл
+
     };
 
     return (
@@ -92,10 +126,6 @@ const RegisterPage = () =>
                             <Input />
                         </Form.Item>
 
-                        <Form.Item label="Фото"
-                                   name={"image"}
-                                   rules={[{required: true, message: "Вкажіть фото"}]}
-                        >
 
                             <Form.Item<IRegisterForm> name="image" valuePropName="fileList"
                                                       getValueFromEvent={normFile}
@@ -117,7 +147,6 @@ const RegisterPage = () =>
                                     <p className="ant-upload-hint">Support for a single or bulk upload.</p>
                                 </Upload.Dragger>
                             </Form.Item>
-                        </Form.Item>
 
 
 
