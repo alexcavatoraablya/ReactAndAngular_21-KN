@@ -1,8 +1,9 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import type {ICarItem} from "../../types/ICarItem.ts";
 import {Select} from "antd";
 import ItemCar from "./ItemCar.tsx";
 import CreateCarItem from "./CreateCarItem.tsx";
+import type {ICreateCar} from "../../types/ICreateCar.ts";
 
 const Homepage = () =>
 {
@@ -69,6 +70,13 @@ const Homepage = () =>
             setCars([...cars].sort((a, b) => b.year - a.year));
         }
     }
+    //функція для додавання авто в список
+    const addCarHandler = (car: ICreateCar) => {
+        //генеруємо id за допомогою математичної операції max
+        const id = cars.length > 0? Math.max(...cars.map(car => car.id)) + 1 : 1;
+        //додаємо авто створивши новий список та переписавши старий
+        setCars(prev => [...prev, {...car, id: id}]);
+    }
 
     const deleteCarHandler = (id: number) => {
         //console.log("Delete item", id);
@@ -110,13 +118,12 @@ const Homepage = () =>
                         ]} />
             </div>
 
-            <CreateCarItem/>
+            <CreateCarItem onCreate={addCarHandler}/>
             {/*key - змінна забеспечення індентифікації списків у віртуальному DOM*/}
             {cars.map(car =>
                 <ItemCar key={car.id} car = {car}
                     deleteCar={deleteCarHandler}/>
             )}
-
 
         </>
     );

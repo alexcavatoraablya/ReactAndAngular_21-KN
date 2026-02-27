@@ -1,60 +1,114 @@
-import React from 'react';
-import type { FormProps } from 'antd';
-import { Button, Form, Input } from 'antd';
+import React, {useState} from 'react';
+import {Button, type FormProps} from 'antd';
+import { Form, Input } from 'antd';
+import type {ICreateCar} from "../../types/ICreateCar.ts";
 
-type FieldType = {
-    username?: string;
-    password?: string;
-    remember?: string;
-};
+interface Props {
+    onCreate: (car: ICreateCar) => void;
+}
 
-const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values);
-};
+const CreateCarItem = ({ onCreate }: Props) => {
 
-const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-};
+    const [form] = Form.useForm<ICreateCar>();
 
-const App: React.FC = () => (
-    <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        style={{ maxWidth: 600 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-    >
-        <Form.Item<FieldType>
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
-        >
-            <Input />
-        </Form.Item>
+    const onHandlerSubmit = (values: ICreateCar) => {
+        console.log("Values form", values);
+        //викликає callback фунцкію з дочірнього компонента
+        onCreate(values);
+        //очищаємо форму
+        form.resetFields();
+    }
 
-        <Form.Item<FieldType>
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
-        >
-            <Input.Password />
-        </Form.Item>
+    const formItemLayout: FormProps = {
+        labelCol: {
+            xs: { span: 24 },
+            sm: { span: 8 },
+        },
+        wrapperCol: {
+            xs: { span: 24 },
+            sm: { span: 16 },
+        },
+    };
 
-        <Form.Item label={null}>
-            <Button type="primary" htmlType="submit">
-                Submit
-            </Button>
-        </Form.Item>
-    </Form>
-);
-
-const CreateCarItem = () => {
     return (
         <>
             <h2 className={"text-green-500 text-center text-3xl"}>Створення авто</h2>
+            <div className="mt-4">
+                <Form form = {form}
+                      {...formItemLayout}
+                      onFinish={onHandlerSubmit}
+                      layout={"horizontal"}
+                >
+                    <div className="grid grid-cols-3 gap-4">
+
+                    <Form.Item<ICreateCar>
+                        label={"Марка"}
+                        name={"mark"}
+                        rules={[{required: true, message: "Вкажіть марку авто"}]}
+                    >
+                        <Input />
+                    </Form.Item>
+
+                        <Form.Item<ICreateCar>
+                            label={"Модель"}
+                            name={"model"}
+                            rules={[{required: true, message: "Вкажіть модель авто"}]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item<ICreateCar>
+                            label={"Колір"}
+                            name={"color"}
+                            rules={[{required: true, message: "Вкажіть колір"}]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item<ICreateCar>
+                            label={"Рік"}
+                            name={"year"}
+                            rules={[{required: true, message: "Вкажіть рік"}]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item<ICreateCar>
+                            label={"Ціна"}
+                            name={"price"}
+                            rules={[{required: true, message: "Вкажіть ціну"}]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                            <Form.Item<ICreateCar>
+                                label={"Фото"}
+                                name={"image"}
+                                rules={[{required: true, message: "Вкажіть фото"}]}
+                            >
+                                <Input />
+                            </Form.Item>
+
+                        <div className={"col-span-2"}>
+                            <Form.Item<ICreateCar>
+                                label={"Опис"}
+                                name={"description"}
+                                rules={[{required: true, message: "Вкажіть опис"}]}
+                            >
+                                <Input />
+                            </Form.Item>
+                        </div>
+
+                        <div className={"flex justify-center"}>
+                            <Form.Item label = {null}>
+                                <Button type={"primary"} htmlType={"submit"}>
+                                    Створити авто
+                                </Button>
+                            </Form.Item>
+                        </div>
+                    </div>
+                </Form>
+            </div>
         </>
     )
 }

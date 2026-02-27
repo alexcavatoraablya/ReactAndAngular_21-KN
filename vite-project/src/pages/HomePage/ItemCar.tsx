@@ -7,10 +7,11 @@ interface ItemCarProps {
     //Буде передаватися вказівник на метод
     //Цей метод буде спрацьовувати на зовні callBack
     deleteCar: (id: number) => void // метод, який будемо викликати для виделення
+    setSelectedCar: (id: ICarItem) => void //callback що змінює обране нами авто
 }
 
 const ItemCar = (props: ItemCarProps) => {
-    const {car, deleteCar} = props;
+    const {car, deleteCar, setSelectedCar} = props;
     return (
         <>
             <div key={car.id} className="max-w-sm w-full lg:max-w-full lg:flex mb-4">
@@ -37,7 +38,11 @@ const ItemCar = (props: ItemCarProps) => {
                     <div className="flex items-center">
                         <p className={'font-bold text-lg text-gray-900'}>{car.price}₴</p>
                     </div>
-                    <div>
+                    <div className={"flex gap-2"}>
+                        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                                onClick={() => {}}>
+                            Edit
+                        </button>
                         <ConfirmDeleteModal confirmDeleteHandler={() => deleteCar(car.id)} />
                         {/*<button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded cursor-pointer"*/}
                         {/*    onClick={() => deleteCar(car.id)}>*/}
