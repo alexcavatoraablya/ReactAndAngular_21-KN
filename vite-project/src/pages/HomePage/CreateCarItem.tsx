@@ -1,21 +1,48 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, type FormProps} from 'antd';
 import { Form, Input } from 'antd';
 import type {ICreateCar} from "../../types/ICreateCar.ts";
+import type {ICarItem} from "../../types/ICarItem.ts";
 
 interface Props {
     onCreate: (car: ICreateCar) => void;
+    editCar?: ICarItem; //відповідає за зміну авто
+    onEdit: (car: ICarItem) => void; //якщо відбувається зміна авто
 }
 
-const CreateCarItem = ({ onCreate }: Props) => {
+const CreateCarItem = ({ onCreate, editCar,onEdit }: Props) => {
 
     const [form] = Form.useForm<ICreateCar>();
+    useEffect(() => {
+        if(editCar)
+        {
+            if(editCar.id!=0) {
+                form.setFieldsValue({
+                    mark: editCar.mark,
+                    model: editCar.model,
+                    color: editCar.color,
+                    year: editCar.year,
+                    price: editCar.price,
+                    description: editCar.description,
+                    image: editCar.image,
+                });
+            }
+        }
+    },
+    [editCar]);
+
+    console.log("editCar", editCar);
 
     const onHandlerSubmit = (values: ICreateCar) => {
-        console.log("Values form", values);
-        //викликає callback фунцкію з дочірнього компонента
-        onCreate(values);
-        //очищаємо форму
+        console.log("Submit form", values);
+        if(editCar) {
+            if(editCar.id!=0)
+                onEdit({...editCar, ...values});
+            else
+                // викликаємо callback функцію з дочірнього компонента
+                onCreate(values);
+        }
+        // очищаэмо форму
         form.resetFields();
     }
 

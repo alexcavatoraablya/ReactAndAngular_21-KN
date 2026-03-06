@@ -6,6 +6,7 @@ import MainLayout from "./componetns/layouts/MainLayout";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import TestPage from "./pages/TestPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
+// import 'react-cropper/node_modelus/cropperjs/dist/cropper.css';
 
 function App() {
 

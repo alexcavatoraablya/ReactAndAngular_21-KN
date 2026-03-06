@@ -5,6 +5,17 @@ import ItemCar from "./ItemCar.tsx";
 import CreateCarItem from "./CreateCarItem.tsx";
 import type {ICreateCar} from "../../types/ICreateCar.ts";
 
+const emptyCar: ICarItem = {
+    id: 0,
+    mark: "",
+    model: "",
+    description: "",
+    image: "",
+    price: 0,
+    color: "",
+    year: 0
+}
+
 const Homepage = () =>
 {
     //useState - спеціальний хук який призначений для зберігання інформації
@@ -54,6 +65,7 @@ const Homepage = () =>
             year: 2021,
         }
     ]);
+    const [selectedCar, setSelectedCar] = useState<ICarItem>(emptyCar);
 
     const sortByPrice = (value: string) => {
         //sort - ф-ція списків що сортує та змінює список за заданим значенням
@@ -76,6 +88,15 @@ const Homepage = () =>
         const id = cars.length > 0? Math.max(...cars.map(car => car.id)) + 1 : 1;
         //додаємо авто створивши новий список та переписавши старий
         setCars(prev => [...prev, {...car, id: id}]);
+    }
+    //оновлення елемента в списку
+    const editCarHandler = (car: ICarItem) => {
+        setSelectedCar(emptyCar);
+        setCars(prev =>
+            prev.map(c =>
+                c.id === car.id ? { ...c, ...car } : c
+            )
+        );
     }
 
     const deleteCarHandler = (id: number) => {
@@ -118,11 +139,11 @@ const Homepage = () =>
                         ]} />
             </div>
 
-            <CreateCarItem onCreate={addCarHandler}/>
+            <CreateCarItem onCreate={addCarHandler} editCar={selectedCar} onEdit={editCarHandler} />
             {/*key - змінна забеспечення індентифікації списків у віртуальному DOM*/}
             {cars.map(car =>
-                <ItemCar key={car.id} car = {car}
-                    deleteCar={deleteCarHandler}/>
+                <ItemCar key={car.id} car = {car} setSelectedCar={setSelectedCar}
+                    deleteCar={deleteCarHandler} />
             )}
 
         </>
