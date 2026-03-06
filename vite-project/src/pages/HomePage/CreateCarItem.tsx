@@ -16,6 +16,7 @@ const CreateCarItem = ({ onCreate, editCar,onEdit }: Props) => {
     useEffect(() => {
         if(editCar)
         {
+            //показує вже існуючі записи для оновлення
             if(editCar.id!=0) {
                 form.setFieldsValue({
                     mark: editCar.mark,

@@ -93,8 +93,8 @@ const Homepage = () =>
     const editCarHandler = (car: ICarItem) => {
         setSelectedCar(emptyCar);
         setCars(prev =>
-            prev.map(c =>
-                c.id === car.id ? { ...c, ...car } : c
+            prev.map(c => //оновлює значення
+                c.id === car.id ? { ...c, ...car } : c //оновлює елементи car за id
             )
         );
     }
