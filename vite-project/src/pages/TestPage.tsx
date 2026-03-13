@@ -1,5 +1,5 @@
 import images from '../assets/images.webp'; // Relative path to the image file
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 // import 'cropperjs/dist/cropper.js';
 // import Cropper, { ReactCropperElement } from "react-cropper";
 import Cropper from "cropperjs";
@@ -10,6 +10,7 @@ const TestPage = () => {
     //Посилання на фото, яке буде працювати у Cropper
     const imgRef = useRef<HTMLImageElement | null>(null);
     const cropperRef = useRef<Cropper | null>(null);
+    const[image, setImage] = useState<string | null>(null);
 
     useEffect(() => {
         // const Cropper = window.Cropper;
@@ -25,6 +26,17 @@ const TestPage = () => {
         };
     },[]);
 
+    const handleCrop = () => {
+        //перевірка чи існує посилання на cropper
+        if (!cropperRef.current) return;
+        //дістаємо cropper за посиланням
+        const cropper = cropperRef.current;
+        //отримуємо фото у форматі base64
+        const base64 = cropper.getCroppedCanvas().toDataURL();
+        //записуємо зображення
+        setImage(base64);
+    }
+
     // const cropperRef = useRef<ReactCropperElement>(null);
     // const onCrop = () => {
     //     const cropper = cropperRef.current?.cropper;
@@ -38,9 +50,10 @@ const TestPage = () => {
                  ref={imgRef}
             />
 
-            <Button type={"primary"} htmlType={"submit"}>
+            <button onClick={handleCrop} className={'my-4 bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer'}>
                 Crop
-            </Button>
+            </button>
+            {image && <img src={image} alt={"Обрізане фото"} className={'w-64'} /> }
         </div>
 
     )
