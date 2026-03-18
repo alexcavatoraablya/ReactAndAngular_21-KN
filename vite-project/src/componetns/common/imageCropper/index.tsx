@@ -69,7 +69,9 @@ const imageCropper = ({ isOpen, setIsOpen, image, onCrop } : Props) => {
                 //     //описуємо компонент в посилання
                 //     ref={cropperRef}
                 // />
+
             }
+            <button onClick={()=> {cropperRef.current?.rotate(90); }}> Повернути </button>
         </Modal>
     )
 }
